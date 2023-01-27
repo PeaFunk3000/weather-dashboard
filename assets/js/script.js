@@ -12,11 +12,19 @@ var myAPI = "5b86dd1981e818e717862cad25215448"
 // --------------------------------------------------------------------------------------------
 
 // Event listener for search button element
-$("#search-button").on("click", function() {
+$("#search-button").on("click", function(event) {
+    event.preventDefault();
     var cityName = $("#search-input").val()
     console.log(cityName);
 
-    var queryURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&appid=" + myAPI
+    var queryURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&appid=" + myAPI ;
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+      }).then(function(response){
+        console.log(response);
+    
+      });
 
 })
 
@@ -35,10 +43,10 @@ $("#search-button").on("click", function() {
 
 
 // AJAX call
-$.ajax({
-    url: locationURL,
-    method: "GET"
-  }).then(function(response){
-    console.log(response);
+// $.ajax({
+//     url: queryURL,
+//     method: "GET"
+//   }).then(function(response){
+//     console.log(response);
 
-  });
+//   });
