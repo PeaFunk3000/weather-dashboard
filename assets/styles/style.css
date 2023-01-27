@@ -1,0 +1,48 @@
+:root
+{
+    --maincolor: black ;
+    --secondarycolor: #2F1C53;
+    --shadowcolor: black;
+    --secondaryshadowcolor: #A46DFF;
+
+    --textcolor: white;
+    --secondarytextcolor: black;
+    --captionbackground: white;
+    --captiontextcolor: black;
+}
+
+*
+{
+    scroll-behavior: smooth;
+    font-family: 'Courier New', Courier, monospace;
+    margin: 0px;
+    padding: 0px;
+    
+}
+
+h1 {
+	font-size: 30px;
+	font-weight: bolder;
+}
+
+h2 {
+	font-size: 28px;
+	font-weight: bold;
+}
+
+
+.weather-header {
+    background: linear-gradient(45deg, #2F1C53, #A46DFF, #F6D1FD);
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}  
+
+.text-white {
+    color: white;
+}
+
+form
+{
+    margin-left: 5px; 
+}
