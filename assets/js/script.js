@@ -8,25 +8,33 @@ console.log("Hello World!");
 // api.openweathermap.org/geo/1.0/direct?q={city name},{state code},{country code}&limit={limit}&appid={API key}
 
 // my API key 5b86dd1981e818e717862cad25215448
-var myAPI = "5b86dd1981e818e717862cad25215448"
+const myAPI = "5b86dd1981e818e717862cad25215448"
 // --------------------------------------------------------------------------------------------
-
+var cityName = $("#search-input").val()
+var latLon = []
 // Event listener for search button element
 $("#search-button").on("click", function(event) {
     event.preventDefault();
     var cityName = $("#search-input").val()
     console.log(cityName);
-
     var queryURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&appid=" + myAPI ;
     $.ajax({
         url: queryURL,
         method: "GET"
       }).then(function(response){
         console.log(response);
-    
+        latLon.push(response[0].lat, response[0].lon)
       });
-
+      console.log(latLon);
+      fiveDayForecast();
 })
+
+function fiveDayForecast() {
+    var queryURL = 
+}
+
+
+
 
 
 // var cityName = "London";
