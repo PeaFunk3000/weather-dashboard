@@ -26,18 +26,7 @@ function fiveDayForecast(response) {
     var lon = response[0].lon;
     var theCity = response[0].name;
     console.log(theCity);
-
-    // var queryURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + myAPI;
-
-    // $.ajax({
-    //     url: queryURL,
-    //     method: "GET"
-    // }).then(function(weatherResponse) {
-    //     weatherResponse.cityName = theCity
-    //     weatherResponse.cityLat = lat
-    //     weatherResponse.cityLon = lon
-    //     mapForecast(weatherResponse);
-    // })
+    getWeatherByLatLon(theCity, lat, lon);
 }
 
 function getWeatherByLatLon (city, lat, lon) {
@@ -98,14 +87,17 @@ function mapForecast(response) {
         cityLon: response.cityLon,
         forecast: fiveDayForecast,
     }
+    localStorage.setItem(response.cityName, JSON.stringify(cityForecast));
 }
 
 
 function historyRecast () {
     localStorage.forEach(element => {
-        element.
+        getWeatherByLatLon(element.cityName, element.cityLat, element.cityLon)
     });        
 }
+
+
 
 
 
