@@ -1,17 +1,8 @@
 console.log("Hello World!");
 
-// API call 5-day-weather
-// api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}
-
-
-// API call co-ords for location name
-// api.openweathermap.org/geo/1.0/direct?q={city name},{state code},{country code}&limit={limit}&appid={API key}
-
-// my API key 5b86dd1981e818e717862cad25215448
 const myAPI = "5b86dd1981e818e717862cad25215448"
-// --------------------------------------------------------------------------------------------
-
 var cityName = $("#search-input").val()
+
 
 // Event listener for search button element
 $("#search-button").on("click", function(event) {
@@ -22,25 +13,38 @@ $("#search-button").on("click", function(event) {
     $.ajax({
         url: queryURL,
         method: "GET"
-      }).then(function(response){
-        console.log(response);
-        fiveDayForecast(response[0].lat, response[0].lon);
+      }).then(fiveDayForecast)
       });   
-})
 
-function fiveDayForecast(lat, lon) {
-    var queryURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + myAPI
+function fiveDayForecast(response) {
+    console.log(response);
+    var lat = response[0].lat;
+    var lon = response[0].lon;
+    var today = $("<div>");
+        today.addClass("today");
+        var todayH2 = $("<h2>");
+        var historyBtn = $("<button>");
+        todayH2.text(response[0].name);
+        today.append(todayH2);
+        $("#today").append(today);
+        historyBtn.addClass("historyBtn");
+        historyBtn.text(response[0].name);
+        $("#history").prepend(historyBtn);
+
+
+    var queryURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + myAPI ;
     console.log(queryURL);
+
     $.ajax({
         url: queryURL,
         method: "GET"
       }).then(function(response){
         console.log(response);
-        console.log(response.city.name);
-        var today = $("<div>");
-        today.addClass("today");
-        var todayH2 = $("<h2>");
-        todayH2.text(response.city.name);
-        today.append(todayH2);
-        $("#today").append(today);
+        // grab date from response
+        var dateArr = response.list[0].dt_txt.split(' ')
+        console.log(dateArr);
+
+        var theDate = moment(dateArr[0]).format("D/M/YYYY");
+        todayH2.append( "" + "(" + theDate + ")");
+        
 })}
