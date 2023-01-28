@@ -19,6 +19,7 @@ $("#search-button").on("click", function (event) {
 
 });
 
+// 5 day forecast
 function fiveDayForecast(response) {
     console.log(response);
     var lat = response[0].lat;
@@ -26,15 +27,40 @@ function fiveDayForecast(response) {
     var theCity = response[0].name;
     console.log(theCity);
 
+    // var queryURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + myAPI;
+
+    // $.ajax({
+    //     url: queryURL,
+    //     method: "GET"
+    // }).then(function(weatherResponse) {
+    //     weatherResponse.cityName = theCity
+    //     weatherResponse.cityLat = lat
+    //     weatherResponse.cityLon = lon
+    //     mapForecast(weatherResponse);
+    // })
+}
+
+function getWeatherByLatLon (city, lat, lon) {
+
     var queryURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + myAPI;
 
     $.ajax({
         url: queryURL,
         method: "GET"
-    }).then(mapForecast)
+    }).then(function(weatherResponse) {
+        weatherResponse.cityName = city
+        weatherResponse.cityLat = lat
+        weatherResponse.cityLon = lon
+        mapForecast(weatherResponse);
+    })
 }
 
-function mapForecast (response) {
+
+// mapForecast
+function mapForecast(response) {
+    console.log(response.cityName);
+    console.log(response.cityLat);
+    console.log(response.cityLon);
     console.log(response);
     console.log(response.list[0]);
     // present Temp (kelvin)
@@ -54,17 +80,33 @@ function mapForecast (response) {
     console.log(weatherToday);
 
     var fiveDayForecast = [];
-    
+
     for (let i = 0; i < response.list.length; i = i + 8) {
-        var day = {temp: response.list[i].main.temp,
-        humidity: response.list[i].main.humidity,
-        windSpeed: response.list[i].wind.speed,
-        weatherCond: response.list[i].weather[0].description,
+        var day = {
+            temp: response.list[i].main.temp,
+            humidity: response.list[i].main.humidity,
+            windSpeed: response.list[i].wind.speed,
+            weatherCond: response.list[i].weather[0].description,
         }
         fiveDayForecast.push(day);
     }
     console.log(fiveDayForecast);
+
+    var cityForecast = {
+        cityName: response.cityName,
+        cityLat: response.cityLat,
+        cityLon: response.cityLon,
+        forecast: fiveDayForecast,
+    }
 }
+
+
+function historyRecast () {
+    localStorage.forEach(element => {
+        element.
+    });        
+}
+
 
 
 
