@@ -1,7 +1,5 @@
-console.log("Hello World!");
 
 const myAPI = "5b86dd1981e818e717862cad25215448"
-
 
 // Event listener for search button element
 $("#search-button").on("click", function (event) {
@@ -9,7 +7,6 @@ $("#search-button").on("click", function (event) {
     var cityName = $("#search-input").val()
     cityName.toLowerCase();
     cityName[0].toUpperCase();
-    console.log(cityName);
 
     var queryURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&appid=" + myAPI;
     $.ajax({
@@ -21,22 +18,20 @@ $("#search-button").on("click", function (event) {
 
 // 5 day forecast
 function fiveDayForecast(response) {
-    console.log(response);
     var lat = response[0].lat;
     var lon = response[0].lon;
     var theCity = response[0].name;
-    console.log(theCity);
     getWeatherByLatLon(theCity, lat, lon);
 }
 
-function getWeatherByLatLon (city, lat, lon) {
+function getWeatherByLatLon(city, lat, lon) {
 
     var queryURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + myAPI;
 
     $.ajax({
         url: queryURL,
         method: "GET"
-    }).then(function(weatherResponse) {
+    }).then(function (weatherResponse) {
         weatherResponse.cityName = city
         weatherResponse.cityLat = lat
         weatherResponse.cityLon = lon
@@ -47,26 +42,12 @@ function getWeatherByLatLon (city, lat, lon) {
 
 // mapForecast
 function mapForecast(response) {
-    console.log(response.cityName);
-    console.log(response.cityLat);
-    console.log(response.cityLon);
-    console.log(response);
-    console.log(response.list[0]);
-    // present Temp (kelvin)
-    console.log(response.list[0].main.temp);
-    // present Humidity
-    console.log(response.list[0].main.humidity);
-    // present Wind speed (KPH)
-    console.log(response.list[0].wind.speed);
-    // present Weather Cond. (fa-icon)
-    console.log(response.list[0].weather[0].description);
-    var weatherToday = {
-        temp: response.list[0].main.temp,
-        humidity: response.list[0].main.humidity,
-        windSpeed: response.list[0].wind.speed,
-        weatherCond: response.list[0].weather[0].description,
-    }
-    console.log(weatherToday);
+    // var weatherToday = {
+    //     temp: response.list[0].main.temp,
+    //     humidity: response.list[0].main.humidity,
+    //     windSpeed: response.list[0].wind.speed,
+    //     weatherCond: response.list[0].weather[0].description,
+    // }
 
     var fiveDayForecast = [];
 
@@ -79,7 +60,6 @@ function mapForecast(response) {
         }
         fiveDayForecast.push(day);
     }
-    console.log(fiveDayForecast);
 
     var cityForecast = {
         cityName: response.cityName,
@@ -91,13 +71,12 @@ function mapForecast(response) {
 }
 
 
-function historyRecast () {
+function historyRecast() {
     var storage = Object.keys(localStorage);
     storage.forEach(element => {
         var parsedStore = JSON.parse((localStorage.getItem(element)))
-        console.log(parsedStore);
         getWeatherByLatLon(parsedStore.cityName, parsedStore.cityLat, parsedStore.cityLon);
-    });         
+    });
 }
 
 
