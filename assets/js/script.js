@@ -92,10 +92,15 @@ function mapForecast(response) {
 
 
 function historyRecast () {
-    localStorage.forEach(element => {
-        getWeatherByLatLon(element.cityName, element.cityLat, element.cityLon)
-    });        
+    var storage = Object.keys(localStorage);
+    storage.forEach(element => {
+        var parsedStore = JSON.parse((localStorage.getItem(element)))
+        console.log(parsedStore);
+        getWeatherByLatLon(parsedStore.cityName, parsedStore.cityLat, parsedStore.cityLon);
+    });         
 }
+
+
 
 
 
