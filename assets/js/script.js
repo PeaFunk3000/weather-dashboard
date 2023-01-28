@@ -68,9 +68,11 @@ function mapForecast(response) {
         forecast: fiveDayForecast,
     }
     localStorage.setItem(response.cityName, JSON.stringify(cityForecast));
+
+    populateHTML();
 }
 
-
+//  history btn recall
 function historyRecast() {
     var storage = Object.keys(localStorage);
     storage.forEach(element => {
@@ -79,7 +81,11 @@ function historyRecast() {
     });
 }
 
+// Func to pop HTML
+function populateHTML() {
 
+    
+}
 
 
 
