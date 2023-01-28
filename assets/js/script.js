@@ -1,7 +1,9 @@
 
 const myAPI = "5b86dd1981e818e717862cad25215448"
 
-var historyDiv = $("#history")
+var historyDiv = $("#history");
+var displayToday = $("#today");
+var displayForecast = $("#forecast");
 
 
 // Event listener for search button element
@@ -9,8 +11,6 @@ $("#search-button").on("click", function (event) {
     event.preventDefault();
     var cityName = $("#search-input").val()
     cityName.toLowerCase();
-    cityName[0].toUpperCase();
-
     var queryURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&appid=" + myAPI;
     $.ajax({
         url: queryURL,
@@ -29,7 +29,7 @@ function fiveDayForecast(response) {
 
 function getWeatherByLatLon(city, lat, lon) {
 
-    var queryURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&units=metric" + "&appid=" + myAPI;
+    var queryURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&units=metric&appid=" + myAPI;
 
     $.ajax({
         url: queryURL,
@@ -46,25 +46,41 @@ function getWeatherByLatLon(city, lat, lon) {
 // mapForecast
 function mapForecast(response) {
     console.log(response);
-    // var weatherToday = {
-    //     temp: response.list[0].main.temp,
-    //     humidity: response.list[0].main.humidity,
-    //     windSpeed: response.list[0].wind.speed,
-    //     weatherCond: response.list[0].weather[0].description,
-    // }
+    var weatherToday = {
+        name: response.cityName,
+        date: response.list[0].dt,
+        temp: response.list[0].main.temp,
+        humidity: response.list[0].main.humidity,
+        windSpeed: response.list[0].wind.speed,
+        weatherCond: response.list[0].weather[0].description,
+    }
+    displayToday.html(`<h1> ${weatherToday.name} ${new Date(weatherToday.date * 1000).toLocaleDateString('en-GB', { weekday: 'long' })} </h1>
+    <img src = "http://openweathermap.org/img/wn/10d@2x.png"/>
+    <p>Temp: ${weatherToday.temp} \u00B0 C </p>
+    <p>Wind: ${weatherToday.windSpeed} KPH </p>
+    <p>Humitity: ${weatherToday.humidity} % </p>`)
 
 
 
-    for (let i = 0; i < response.list.length; i = i + 8) {
+    for (let i = 8; i < response.list.length; i = i + 8) {
         var day = {
+            name: response.cityName,
             date: response.list[i].dt,
             temp: response.list[i].main.temp,
             humidity: response.list[i].main.humidity,
             windSpeed: response.list[i].wind.speed,
             weatherCond: response.list[i].weather[0].description,
         }
-       //create the html
-        
+        console.log(day);
+        var dayDiv = $("<div>")
+        dayDiv.addClass("forecast")
+        dayDiv.html(`<h2> ${new Date(day.date * 1000).toLocaleDateString('en-GB', { weekday: 'long' })} </h1>
+    <img src = "http://openweathermap.org/img/wn/10d@2x.png"/>
+    <p>Temp: ${day.temp} \u00B0 C </p>
+    <p>Wind: ${day.windSpeed} KPH </p>
+    <p>Humitity: ${day.humidity} % </p>`)
+    displayForecast.append(dayDiv);
+
     }
 
 
@@ -96,7 +112,6 @@ function populateHistory() {
         var historyBtn = $("<button>");
         historyBtn.text(parsedStore.cityName);
         historyBtn.on("click", function (event) {
-            console.log(event);
             getWeatherByLatLon(parsedStore.cityName, parsedStore.cityLat, parsedStore.cityLon)
         })
         historyDiv.append(historyBtn);
@@ -108,7 +123,7 @@ populateHistory();
 
 
 
-    
+
 
 
 
