@@ -80,17 +80,17 @@ function mapForecast(response) {
             humidity: response.list[i].main.humidity,
             windSpeed: response.list[i].wind.speed,
             weatherCond: response.list[i].weather[0].description,
+            weatherIcon: response.list[i].weather[0].icon,
         }
         console.log(day);
         var dayDiv = $("<div>")
         dayDiv.addClass("forecast")
         dayDiv.html(`<h2> ${new Date(day.date * 1000).toLocaleDateString('en-GB', { weekday: 'long' })} </h1>
-    <img src = "http://openweathermap.org/img/wn/10d@2x.png"/>
+    <img src = "http://openweathermap.org/img/wn/${day.weatherIcon}@2x.png"/>
     <p>Temp: ${day.temp} \u00B0 C </p>
     <p>Wind: ${day.windSpeed} KPH </p>
     <p>Humitity: ${day.humidity} % </p>`)
     displayForecast.append(dayDiv);
-
     }
     // locally store data, using the paramters carried forward from first AJAX API call (cityName, cityLat, cityLon)
     var cityForecast = {
