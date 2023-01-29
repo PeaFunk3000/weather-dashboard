@@ -5,36 +5,43 @@ var historyDiv = $("#history");
 var displayToday = $("#today");
 var displayForecast = $("#forecast");
 
+window.addEventListener("load", populateHistory);
+
 
 // Event listener for search button element
 $("#search-button").on("click", function (event) {
     event.preventDefault();
     var cityName = $("#search-input").val()
     cityName.toLowerCase();
+    // First AJAX API call for geo tag - lat lon using cityName
     var queryURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&appid=" + myAPI;
     $.ajax({
         url: queryURL,
         method: "GET"
+        // then call five day forecast with response
     }).then(fiveDayForecast)
 });
 
 // 5 day forecast
 function fiveDayForecast(response) {
-
+    // store theCity, lat and lon, pass these into getWeatherbyLatLon
     var lat = response[0].lat;
     var lon = response[0].lon;
     var theCity = response[0].name;
     getWeatherByLatLon(theCity, lat, lon);
 }
 
+// get weather forecast using city, lat, lon
 function getWeatherByLatLon(city, lat, lon) {
 
+    // AJAX API call for weather data using city lat and lon
     var queryURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&units=metric&appid=" + myAPI;
 
     $.ajax({
         url: queryURL,
         method: "GET"
     }).then(function (weatherResponse) {
+        // carry city, lat and lon parameters into mapForecast func by defining new response cityName, cityLat, cityLon
         weatherResponse.cityName = city
         weatherResponse.cityLat = lat
         weatherResponse.cityLon = lon
@@ -43,9 +50,12 @@ function getWeatherByLatLon(city, lat, lon) {
 }
 
 
-// mapForecast
+// mapForecast to dynamically map HTML
 function mapForecast(response) {
     console.log(response);
+    displayToday.empty();
+    displayForecast.empty();
+    // weatherToday defined, dynamically displayed in displayToday
     var weatherToday = {
         name: response.cityName,
         date: response.list[0].dt,
@@ -61,8 +71,8 @@ function mapForecast(response) {
     <p>Humitity: ${weatherToday.humidity} % </p>`)
 
 
-
-    for (let i = 8; i < response.list.length; i = i + 8) {
+    // each 5 day forecast day defined, dynamically displayed in displayForecast under new dayDiv
+    for (let i = 7; i < response.list.length; i = i + 8) {
         var day = {
             name: response.cityName,
             date: response.list[i].dt,
@@ -82,9 +92,7 @@ function mapForecast(response) {
     displayForecast.append(dayDiv);
 
     }
-
-
-
+    // locally store data, using the paramters carried forward from first AJAX API call (cityName, cityLat, cityLon)
     var cityForecast = {
         cityName: response.cityName,
         cityLat: response.cityLat,
@@ -92,6 +100,7 @@ function mapForecast(response) {
         // forecast: fiveDayForecast,
     }
     localStorage.setItem(response.cityName, JSON.stringify(cityForecast));
+    populateHistory();
 }
 
 //  history btn recall
@@ -103,7 +112,7 @@ function mapForecast(response) {
 //     });
 // }
 
-// Func to pop HTML
+// Func to populateHistory - create button for each city searched from localstorage
 function populateHistory() {
     historyDiv.empty();
     var storage = Object.keys(localStorage);
@@ -117,8 +126,6 @@ function populateHistory() {
         historyDiv.append(historyBtn);
     });
 }
-
-populateHistory();
 
 
 
