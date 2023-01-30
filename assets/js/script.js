@@ -95,13 +95,13 @@ function mapForecast(response) {
     displayForecast.append(dayDiv);
     }
     // locally store data, using the paramters carried forward from first AJAX API call (cityName, cityLat, cityLon)
-    var cityForecast = {
+    var cityDetails = {
         cityName: response.cityName,
         cityLat: response.cityLat,
         cityLon: response.cityLon,
         // forecast: fiveDayForecast,
     }
-    localStorage.setItem(response.cityName, JSON.stringify(cityForecast));
+    localStorage.setItem(response.cityName, JSON.stringify(cityDetails));
     populateHistory();
 }
 
@@ -118,6 +118,11 @@ function mapForecast(response) {
 function populateHistory() {
     historyDiv.empty();
     var storage = Object.keys(localStorage);
+    console.log(storage);
+    // sort storage alphabetically
+    storage.sort()
+    console.log(storage)
+    
     storage.forEach(element => {
         var parsedStore = JSON.parse((localStorage.getItem(element)))
         var historyBtn = $("<button>");
