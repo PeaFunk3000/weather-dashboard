@@ -33,7 +33,6 @@ searchBtn.on("click", function (event) {
         method: "GET"
         // then define lat and lon from response, call getWeatherByLatLon func with theCity, lat, lon as parameters
     }).then(function (response) {
-        console.log(response);
         // validation for user input, alerts if not a valid city name or if a country name is entered
         if (response.length == 0 || !response[0].local_names) {
             alert("Please enter a valid city name");
