@@ -70,6 +70,7 @@ function mapForecast(response) {
     <p>Temp: ${weatherToday.temp} \u00B0 C </p>
     <p>Wind: ${weatherToday.windSpeed} KPH </p>
     <p>Humitity: ${weatherToday.humidity} % </p>`)
+    displayToday.addClass("today-now");
 
 
     // each 5 day forecast day defined, dynamically displayed in displayForecast under new dayDiv

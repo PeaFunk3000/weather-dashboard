@@ -61,7 +61,7 @@ h1 {
     margin-top: 5px;
 }
 
-#today {
+.today-now {
     border-color: #2F1C53 !important;
     border: solid !important;
     border-width: 2px !important;
