@@ -1,15 +1,26 @@
 
+// API key const
 const myAPI = "5b86dd1981e818e717862cad25215448"
 
+// HTML DOM queryselectors - jQuery
 var historyDiv = $("#history");
 var displayToday = $("#today");
 var displayForecast = $("#forecast");
+var clearBtn = $("#clear-button");
+var searchBtn = $("#search-button");
 
+// event listener for page load, call populateHistory function - populate history buttons from localstorage
 window.addEventListener("load", populateHistory);
 
+clearBtn.on("click", function (event) {
+    event.preventDefault();
+    historyDiv.empty()
+    localStorage.clear();
+});
 
-// Event listener for search button element
-$("#search-button").on("click", function (event) {
+
+// Event listener for search button, on click call first API call from search input - get Lat Lon values for a city 
+searchBtn.on("click", function (event) {
     event.preventDefault();
     var cityName = $("#search-input").val()
     cityName.toLowerCase();
@@ -18,18 +29,27 @@ $("#search-button").on("click", function (event) {
     $.ajax({
         url: queryURL,
         method: "GET"
-        // then call five day forecast with response
-    }).then(fiveDayForecast)
+        // then define lat and lon from response, call getWeatherByLatLon func with theCity, lat, lon as parameters
+    }).then(function (response) {
+        console.log(response);
+        if(response.length == 0){
+            alert("Please enter a valid city name");
+        } else {
+        var lat = response[0].lat;
+        var lon = response[0].lon;
+        var theCity = response[0].name;
+        getWeatherByLatLon(theCity, lat, lon);
+    }})
 });
 
-// 5 day forecast
-function fiveDayForecast(response) {
-    // store theCity, lat and lon, pass these into getWeatherbyLatLon
-    var lat = response[0].lat;
-    var lon = response[0].lon;
-    var theCity = response[0].name;
-    getWeatherByLatLon(theCity, lat, lon);
-}
+// // 5 day forecast
+// function fiveDayForecast(response) {
+//     // store theCity, lat and lon, pass these into getWeatherbyLatLon
+//     var lat = response[0].lat;
+//     var lon = response[0].lon;
+//     var theCity = response[0].name;
+//     getWeatherByLatLon(theCity, lat, lon);
+// }
 
 // get weather forecast using city, lat, lon
 function getWeatherByLatLon(city, lat, lon) {
@@ -45,13 +65,13 @@ function getWeatherByLatLon(city, lat, lon) {
         weatherResponse.cityName = city
         weatherResponse.cityLat = lat
         weatherResponse.cityLon = lon
-        mapForecast(weatherResponse);
+        mapFiveDayForecast(weatherResponse);
     })
 }
 
 
-// mapForecast to dynamically map HTML
-function mapForecast(response) {
+// mapForecast to dynamically create HTML elements to display 5 day weather forecast
+function mapFiveDayForecast(response) {
     console.log(response);
     displayToday.empty();
     displayForecast.empty();
@@ -92,7 +112,7 @@ function mapForecast(response) {
     <p>Temp: ${day.temp} \u00B0 C </p>
     <p>Wind: ${day.windSpeed} KPH </p>
     <p>Humitity: ${day.humidity} % </p>`)
-    displayForecast.append(dayDiv);
+        displayForecast.append(dayDiv);
     }
     // locally store data, using the paramters carried forward from first AJAX API call (cityName, cityLat, cityLon)
     var cityDetails = {
@@ -105,35 +125,30 @@ function mapForecast(response) {
     populateHistory();
 }
 
-//  history btn recall
-// function historyRecast() {
-//     var storage = Object.keys(localStorage);
-//     storage.forEach(element => {
-//         var parsedStore = JSON.parse((localStorage.getItem(element)))
-//         getWeatherByLatLon(parsedStore.cityName, parsedStore.cityLat, parsedStore.cityLon);
-//     });
-// }
-
 // Func to populateHistory - create button for each city searched from localstorage
 function populateHistory() {
+    // empty existing button destination div
     historyDiv.empty();
+    // get localstorage key values to store array of city names
     var storage = Object.keys(localStorage);
-    console.log(storage);
-    // sort storage alphabetically
+    // sort alphabetically
     storage.sort()
-    console.log(storage)
-    
+    // forEach to getItem for each key value(element) in storage array and create a history button using cityName as text
     storage.forEach(element => {
         var parsedStore = JSON.parse((localStorage.getItem(element)))
         var historyBtn = $("<button>");
-        historyBtn.addClass("historyBtn")
+        historyBtn.addClass("historyBtn");
         historyBtn.text(parsedStore.cityName);
+        // add event listener to each button, to getWeatherbyLatLon on click
         historyBtn.on("click", function (event) {
             getWeatherByLatLon(parsedStore.cityName, parsedStore.cityLat, parsedStore.cityLon)
-        })
+        });
+        // append button to historyDiv
         historyDiv.append(historyBtn);
     });
+    
 }
+
 
 
 
