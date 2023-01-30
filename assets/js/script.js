@@ -64,11 +64,13 @@ function mapForecast(response) {
         windSpeed: response.list[0].wind.speed,
         weatherCond: response.list[0].weather[0].description,
     }
-    displayToday.html(`<h1> ${weatherToday.name} ${new Date(weatherToday.date * 1000).toLocaleDateString('en-GB', { weekday: 'long' })} </h1>
+    displayToday.html(`<h1> ${weatherToday.name} </h1> 
+    <h2>${new Date(weatherToday.date * 1000).toLocaleDateString('en-GB', { weekday: 'long' })} </h2>
     <img src = "http://openweathermap.org/img/wn/10d@2x.png"/>
     <p>Temp: ${weatherToday.temp} \u00B0 C </p>
     <p>Wind: ${weatherToday.windSpeed} KPH </p>
     <p>Humitity: ${weatherToday.humidity} % </p>`)
+    displayToday.addClass("today-now");
 
 
     // each 5 day forecast day defined, dynamically displayed in displayForecast under new dayDiv
@@ -85,7 +87,7 @@ function mapForecast(response) {
         console.log(day);
         var dayDiv = $("<div>")
         dayDiv.addClass("forecast")
-        dayDiv.html(`<h2> ${new Date(day.date * 1000).toLocaleDateString('en-GB', { weekday: 'long' })} </h1>
+        dayDiv.html(`<h3> ${new Date(day.date * 1000).toLocaleDateString('en-GB', { weekday: 'long' })} </h3>
     <img src = "http://openweathermap.org/img/wn/${day.weatherIcon}@2x.png"/>
     <p>Temp: ${day.temp} \u00B0 C </p>
     <p>Wind: ${day.windSpeed} KPH </p>
@@ -119,6 +121,7 @@ function populateHistory() {
     storage.forEach(element => {
         var parsedStore = JSON.parse((localStorage.getItem(element)))
         var historyBtn = $("<button>");
+        historyBtn.addClass("historyBtn")
         historyBtn.text(parsedStore.cityName);
         historyBtn.on("click", function (event) {
             getWeatherByLatLon(parsedStore.cityName, parsedStore.cityLat, parsedStore.cityLon)
