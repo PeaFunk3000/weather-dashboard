@@ -18,7 +18,6 @@ clearBtn.on("click", function (event) {
     historyDiv.empty()
 });
 
-
 // Event listener for search button, on click call first API call from search input - get Lat Lon values for a city 
 searchBtn.on("click", function (event) {
     event.preventDefault();
@@ -35,24 +34,17 @@ searchBtn.on("click", function (event) {
         // then define lat and lon from response, call getWeatherByLatLon func with theCity, lat, lon as parameters
     }).then(function (response) {
         console.log(response);
-        if(response.length == 0 || !response[0].local_names){
+        // validation for user input, alerts if not a valid city name or if a country name is entered
+        if (response.length == 0 || !response[0].local_names) {
             alert("Please enter a valid city name");
         } else {
-        var lat = response[0].lat;
-        var lon = response[0].lon;
-        var theCity = response[0].name;
-        getWeatherByLatLon(theCity, lat, lon);
-    }})
+            var lat = response[0].lat;
+            var lon = response[0].lon;
+            var theCity = response[0].name;
+            getWeatherByLatLon(theCity, lat, lon);
+        }
+    })
 });
-
-// // 5 day forecast
-// function fiveDayForecast(response) {
-//     // store theCity, lat and lon, pass these into getWeatherbyLatLon
-//     var lat = response[0].lat;
-//     var lon = response[0].lon;
-//     var theCity = response[0].name;
-//     getWeatherByLatLon(theCity, lat, lon);
-// }
 
 // get weather forecast using city, lat, lon
 function getWeatherByLatLon(city, lat, lon) {
@@ -72,7 +64,6 @@ function getWeatherByLatLon(city, lat, lon) {
     })
 }
 
-
 // mapForecast to dynamically create HTML elements to display 5 day weather forecast
 function mapFiveDayForecast(response) {
     displayToday.empty();
@@ -86,6 +77,7 @@ function mapFiveDayForecast(response) {
         windSpeed: response.list[0].wind.speed,
         weatherCond: response.list[0].weather[0].description,
     }
+    // set html contents of displayToday, using template string
     displayToday.html(`<h1> ${weatherToday.name} </h1> 
     <h2>${new Date(weatherToday.date * 1000).toLocaleDateString('en-GB', { weekday: 'long' })} </h2>
     <h3>${new Date(weatherToday.date * 1000).toLocaleDateString('en-GB', 'dd/mm/yy')} </h2>
@@ -124,6 +116,7 @@ function mapFiveDayForecast(response) {
         // forecast: fiveDayForecast,
     }
     localStorage.setItem(response.cityName, JSON.stringify(cityDetails));
+    // call populateHistory
     populateHistory();
 }
 
@@ -148,7 +141,6 @@ function populateHistory() {
         // append button to historyDiv
         historyDiv.append(historyBtn);
     });
-    
 }
 
 
