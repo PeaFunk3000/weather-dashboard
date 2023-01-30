@@ -14,16 +14,19 @@ window.addEventListener("load", populateHistory);
 
 clearBtn.on("click", function (event) {
     event.preventDefault();
-    historyDiv.empty()
     localStorage.clear();
+    historyDiv.empty()
 });
 
 
 // Event listener for search button, on click call first API call from search input - get Lat Lon values for a city 
 searchBtn.on("click", function (event) {
     event.preventDefault();
+    // define search input as var cityName
     var cityName = $("#search-input").val()
     cityName.toLowerCase();
+    // clear search input
+    $("#search-input").val('');
     // First AJAX API call for geo tag - lat lon using cityName
     var queryURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&appid=" + myAPI;
     $.ajax({
@@ -32,7 +35,7 @@ searchBtn.on("click", function (event) {
         // then define lat and lon from response, call getWeatherByLatLon func with theCity, lat, lon as parameters
     }).then(function (response) {
         console.log(response);
-        if(response.length == 0){
+        if(response.length == 0 || !response[0].local_names){
             alert("Please enter a valid city name");
         } else {
         var lat = response[0].lat;
@@ -72,7 +75,6 @@ function getWeatherByLatLon(city, lat, lon) {
 
 // mapForecast to dynamically create HTML elements to display 5 day weather forecast
 function mapFiveDayForecast(response) {
-    console.log(response);
     displayToday.empty();
     displayForecast.empty();
     // weatherToday defined, dynamically displayed in displayToday
@@ -86,6 +88,7 @@ function mapFiveDayForecast(response) {
     }
     displayToday.html(`<h1> ${weatherToday.name} </h1> 
     <h2>${new Date(weatherToday.date * 1000).toLocaleDateString('en-GB', { weekday: 'long' })} </h2>
+    <h3>${new Date(weatherToday.date * 1000).toLocaleDateString('en-GB', 'dd/mm/yy')} </h2>
     <img src = "http://openweathermap.org/img/wn/10d@2x.png"/>
     <p>Temp: ${weatherToday.temp} \u00B0 C </p>
     <p>Wind: ${weatherToday.windSpeed} KPH </p>
@@ -104,7 +107,6 @@ function mapFiveDayForecast(response) {
             weatherCond: response.list[i].weather[0].description,
             weatherIcon: response.list[i].weather[0].icon,
         }
-        console.log(day);
         var dayDiv = $("<div>")
         dayDiv.addClass("forecast")
         dayDiv.html(`<h3> ${new Date(day.date * 1000).toLocaleDateString('en-GB', { weekday: 'long' })} </h3>
