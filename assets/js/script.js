@@ -15,7 +15,10 @@ window.addEventListener("load", populateHistory);
 clearBtn.on("click", function (event) {
     event.preventDefault();
     localStorage.clear();
-    historyDiv.empty()
+    displayToday.removeClass("today-now");
+    displayToday.empty();
+    displayForecast.empty();
+    historyDiv.empty();
 });
 
 // Event listener for search button, on click call first API call from search input - get Lat Lon values for a city 
@@ -101,12 +104,17 @@ function mapFiveDayForecast(response) {
         var dayDiv = $("<div>")
         dayDiv.addClass("forecast")
         dayDiv.html(`<h3> ${new Date(day.date * 1000).toLocaleDateString('en-GB', { weekday: 'long' })} </h3>
+        <h4>${new Date(day.date * 1000).toLocaleDateString('en-GB', 'dd/mm/yy')} </h4>
     <img src = "http://openweathermap.org/img/wn/${day.weatherIcon}@2x.png"/>
     <p>Temp: ${day.temp} \u00B0 C </p>
     <p>Wind: ${day.windSpeed} KPH </p>
     <p>Humitity: ${day.humidity} % </p>`)
         displayForecast.append(dayDiv);
     }
+    var forecastHeading = $("<h2>");
+    forecastHeading.text("5-Day Forecast");
+    forecastHeading.addClass("forecastH");
+    displayForecast.prepend(forecastHeading);
     // locally store data, using the paramters carried forward from first AJAX API call (cityName, cityLat, cityLon)
     var cityDetails = {
         cityName: response.cityName,
