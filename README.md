@@ -53,7 +53,7 @@ https://peafunk3000.github.io/weather-dashboard/
 
 The repository for this project can be found on my GitHub:
 <br>
-https://github.com/PeaFunk3000/pweather-dashboard/
+https://github.com/PeaFunk3000/weather-dashboard/
 <br>
 
 ## Credits
