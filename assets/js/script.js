@@ -86,7 +86,7 @@ function mapFiveDayForecast(response) {
     <img src = "http://openweathermap.org/img/wn/10d@2x.png"/>
     <p>Temp: ${weatherToday.temp} \u00B0 C </p>
     <p>Wind: ${weatherToday.windSpeed} KPH </p>
-    <p>Humitity: ${weatherToday.humidity} % </p>`)
+    <p>Humidity: ${weatherToday.humidity} % </p>`)
     displayToday.addClass("today-now");
 
 
@@ -108,7 +108,7 @@ function mapFiveDayForecast(response) {
     <img src = "http://openweathermap.org/img/wn/${day.weatherIcon}@2x.png"/>
     <p>Temp: ${day.temp} \u00B0 C </p>
     <p>Wind: ${day.windSpeed} KPH </p>
-    <p>Humitity: ${day.humidity} % </p>`)
+    <p>Humidity: ${day.humidity} % </p>`)
         displayForecast.append(dayDiv);
     }
     var forecastHeading = $("<h2>");
