@@ -30,7 +30,7 @@ searchBtn.on("click", function (event) {
     // clear search input
     $("#search-input").val('');
     // First AJAX API call for geo tag - lat lon using cityName
-    var queryURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&appid=" + myAPI;
+    var queryURL = "https://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&appid=" + myAPI;
     $.ajax({
         url: queryURL,
         method: "GET"
