@@ -44,14 +44,21 @@ h1 {
     color: azure;
 }
 
-#search-button {
+.searchClearBtns {
     margin-top: 15px;
     width: 100% !important;
     background-color:#A46DFF !important;
     border-color: #2F1C53 !important;
-    color: azure;
+    color: azure !important;
 }
 
+.clearBtn {
+        margin-top: 15px;
+        width: 100%;
+        background-color:#A46DFF;
+        border-color: #2F1C53;
+        color: azure;
+}
 #search-input {
     width: 100% !important;
     height: 40px !important;
