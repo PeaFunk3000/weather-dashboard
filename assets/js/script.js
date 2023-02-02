@@ -78,13 +78,13 @@ function mapFiveDayForecast(response) {
         humidity: response.list[0].main.humidity,
         windSpeed: response.list[0].wind.speed,
         weatherCond: response.list[0].weather[0].description,
-        weatherIcon: response.list[0].weather[0].icon,b
+        weatherIcon: response.list[0].weather[0].icon,
     }
     // set html contents of displayToday, using template string
     displayToday.html(`<h1> ${weatherToday.name} </h1> 
     <h2>${new Date(weatherToday.date * 1000).toLocaleDateString('en-GB', { weekday: 'long' })} </h2>
     <h3>${new Date(weatherToday.date * 1000).toLocaleDateString('en-GB', 'dd/mm/yy')} </h2>
-    <img src = "http://openweathermap.org/img/wn/${weatherToday.weatherIcon}@2x.png"/>
+    <img src = "https://openweathermap.org/img/wn/${weatherToday.weatherIcon}@2x.png"/>
     <p>Temp: ${weatherToday.temp} \u00B0 C </p>
     <p>Wind: ${weatherToday.windSpeed} KPH </p>
     <p>Humidity: ${weatherToday.humidity} % </p>`)
@@ -106,7 +106,7 @@ function mapFiveDayForecast(response) {
         dayDiv.addClass("forecast")
         dayDiv.html(`<h3> ${new Date(day.date * 1000).toLocaleDateString('en-GB', { weekday: 'long' })} </h3>
         <h4>${new Date(day.date * 1000).toLocaleDateString('en-GB', 'dd/mm/yy')} </h4>
-    <img src = "http://openweathermap.org/img/wn/${day.weatherIcon}@2x.png"/>
+    <img src = "https://openweathermap.org/img/wn/${day.weatherIcon}@2x.png"/>
     <p>Temp: ${day.temp} \u00B0 C </p>
     <p>Wind: ${day.windSpeed} KPH </p>
     <p>Humidity: ${day.humidity} % </p>`)
