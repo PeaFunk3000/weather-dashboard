@@ -78,12 +78,13 @@ function mapFiveDayForecast(response) {
         humidity: response.list[0].main.humidity,
         windSpeed: response.list[0].wind.speed,
         weatherCond: response.list[0].weather[0].description,
+        weatherIcon: response.list[0].weather[0].icon,b
     }
     // set html contents of displayToday, using template string
     displayToday.html(`<h1> ${weatherToday.name} </h1> 
     <h2>${new Date(weatherToday.date * 1000).toLocaleDateString('en-GB', { weekday: 'long' })} </h2>
     <h3>${new Date(weatherToday.date * 1000).toLocaleDateString('en-GB', 'dd/mm/yy')} </h2>
-    <img src = "http://openweathermap.org/img/wn/10d@2x.png"/>
+    <img src = "http://openweathermap.org/img/wn/${weatherToday.weatherIcon}@2x.png"/>
     <p>Temp: ${weatherToday.temp} \u00B0 C </p>
     <p>Wind: ${weatherToday.windSpeed} KPH </p>
     <p>Humidity: ${weatherToday.humidity} % </p>`)
